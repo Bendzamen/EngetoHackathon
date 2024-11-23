@@ -1,0 +1,4 @@
+[flake8]
+max-line-length = 130
+ignore = E501,W391,E265,W503,E203,E731
+min_python_version = 3.10.2
