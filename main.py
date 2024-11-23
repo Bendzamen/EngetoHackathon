@@ -9,13 +9,12 @@ st.title("Kalkulacka refinancovani hypoteky")
 
 st.write("### Vstupni data")
 col1, col2 = st.columns(2)
-home_value = col1.number_input("Splacena castka", min_value=0, value=100_000)
-deposit = col1.number_input("Zbyva doplatit", min_value=0, max_value=home_value, value=80_000)
-old_interest_rate = col2.number_input("Urok (in %)", min_value=0.1, value=2.0) / 100
-old_loan_length = col1.number_input("Doba splaceni (in years)", min_value=1, value=30)
-old_loan_current_year = col1.number_input("Rok splaceni", min_value=1, value=1)
-refinancing_interest_rate = col2.number_input("Urok refinancovani (in %)", min_value=0.1, value=1.0) / 100
-new_loan_length = col2.number_input("Doba refinancovani (in years)", min_value=0.0, value=7.0)
+home_value = col1.number_input("Hypotecni pujcka", min_value=0, value=100_000)
+old_interest_rate = col2.number_input("Urok [%]", min_value=0.1, value=5.0) / 100
+old_loan_length = col1.number_input("Doba splaceni [roky]", min_value=1, value=30)
+old_loan_current_year = col1.number_input("Rok refinancovani", min_value=1, max_value=old_loan_length - 1, value=1)
+refinancing_interest_rate = col2.number_input("Urok refinancovani [%]", min_value=0.1, value=1.0) / 100
+new_loan_length = col2.number_input("Doba refinancovani (v letech)", min_value=0, value=7)
 length_change = old_loan_length - new_loan_length
 
 
