@@ -82,9 +82,9 @@ if __name__ == "__main__":
         invest_data=invest_data,
         monthly_invest=2000,
         yearly_interest_rates={
-            "risky": 0.08,
-            "medium": 0.05,
-            "safe": 0.03,
+            "risky": 0.08, # add couple % to S&P?
+            "medium": 0.05, # take from S&P index
+            "safe": 0.03, # state bonds
         },
         target_amount=1000000,
         max_years=30,
