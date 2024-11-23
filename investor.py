@@ -61,6 +61,7 @@ class Investor:
         self.curr_val_medium += monthly_invest
         self.curr_val_safe += monthly_invest
         self.apply_interests()
+        return (self.invest_data.risky_values[-1], self.invest_data.medium_values[-1], self.invest_data.safe_values[-1])
 
 
 if __name__ == "__main__":
