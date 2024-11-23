@@ -67,7 +67,7 @@ class Investor:
         if not self.safe_reached:
             print(f"safe target not reached in {self.max_years} years")
 
-    def calculate_investments(self):
+    def calculate_investments(self) -> InvestmentData:
         for i in range(self.max_years):
             self._add_investment()
             self._apply_interests()

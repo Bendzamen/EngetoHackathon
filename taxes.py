@@ -12,7 +12,7 @@ class Taxes:
             yearly_sum = sum(self.tax_discounts[i : i + months_in_year])
             self.interests_yearly.append(round(yearly_sum, 2))
 
-    def calculate_discounts(self):
+    def calculate_discounts(self) -> list[float]:
         if not self.interests_yearly:
             self.aggregate_yearly_values()
         for i in self.interests_yearly:
