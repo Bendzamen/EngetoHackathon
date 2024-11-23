@@ -15,14 +15,10 @@ class Investor:
         invest_data: InvestmentData,
         monthly_invest: float,
         yearly_interest_rates: dict,
-        target_amount: float,
-        max_years: int,
     ):
         self.invest_data = invest_data
         self.monthly_invest = monthly_invest
         self.yearly_interest_rates = yearly_interest_rates
-        self.target_amount = target_amount
-        self.max_years = max_years
         self.curr_val_risky = 0
         self.curr_val_medium = 0
         self.curr_val_safe = 0
@@ -30,72 +26,56 @@ class Investor:
         self.medium_reached = False
         self.safe_reached = False
 
-    def _apply_interests(self):
-        self.curr_val_risky = self.curr_val_risky * (1 + self.yearly_interest_rates["risky"])
+    @staticmethod
+    def _cumulative_sum(numbers):
+        cumulative_list = []
+        total = 0
+        for num in numbers:
+            total += num
+            cumulative_list.append(total)
+        return cumulative_list
+
+    def apply_interests(self):
+        monthly_interest_multi = 1 + (self.yearly_interest_rates["risky"] / 12)
+        self.curr_val_risky = self.curr_val_risky * monthly_interest_multi
         self.invest_data.risky_values.append(int(self.curr_val_risky))
 
-        self.curr_val_medium = self.curr_val_medium * (1 + self.yearly_interest_rates["medium"])
+        monthly_interest_multi = 1 + (self.yearly_interest_rates["medium"] / 12)
+        self.curr_val_medium = self.curr_val_medium * monthly_interest_multi
         self.invest_data.medium_values.append(int(self.curr_val_medium))
 
-        self.curr_val_safe = self.curr_val_safe * (1 + self.yearly_interest_rates["safe"])
+        monthly_interest_multi = 1 + (self.yearly_interest_rates["safe"] / 12)
+        self.curr_val_safe = self.curr_val_safe * monthly_interest_multi
         self.invest_data.safe_values.append(int(self.curr_val_safe))
 
-    def _add_investment(self):
-        self.curr_val_risky += 12 * self.monthly_invest
-        self.curr_val_medium += 12 * self.monthly_invest
-        self.curr_val_safe += 12 * self.monthly_invest
-
-    def _check_target_reached(self, years: int):
-        if not self.risky_reached:
-            if self.curr_val_risky >= self.target_amount:
-                print(f"target reached with risky investments in {years} years")
-                self.risky_reached = True
-        if not self.medium_reached:
-            if self.curr_val_medium >= self.target_amount:
-                print(f"target reached with medium investments in {years} years")
-                self.medium_reached = True
-        if not self.safe_reached:
-            if self.curr_val_safe >= self.target_amount:
-                print(f"target reached with safe investments in {years} years")
-                self.safe_reached = True
-
-    def _final_check(self):
-        if not self.risky_reached:
-            print(f"risky target not reached in {self.max_years} years")
-        if not self.medium_reached:
-            print(f"medium target not reached in {self.max_years} years")
-        if not self.safe_reached:
-            print(f"safe target not reached in {self.max_years} years")
-
-    def calculate_investments(self) -> InvestmentData:
-        for i in range(self.max_years):
-            self._add_investment()
-            self._apply_interests()
-            self._check_target_reached(years=i)
-        self._final_check()
-        return self.invest_data
-
+    def add_investment(self, investment: float = None):
+        monthly_invest = self.monthly_invest if not investment else investment
+        self.curr_val_risky += monthly_invest
+        self.curr_val_medium += monthly_invest
+        self.curr_val_safe += monthly_invest
+        self.apply_interests()
 
 if __name__ == "__main__":
     invest_data = InvestmentData()
     investor = Investor(
         invest_data=invest_data,
-        monthly_invest=2000,
+        monthly_invest=1000,
         yearly_interest_rates={
             "risky": 0.08, # add couple % to S&P?
             "medium": 0.05, # take from S&P index
             "safe": 0.03, # state bonds
         },
-        target_amount=1000000,
-        max_years=30,
     )
-    invest_data = investor.calculate_investments()
+
+    for i in range(36):
+        investor.add_investment(1000)
+
     print("list of risky investment values")
     for i, val in enumerate(invest_data.risky_values):
-        print(f"year: {i + 1}, value: {val}")
+        print(f"month: {i + 1}, value: {val}")
     print("list of medium investment values")
     for i, val in enumerate(invest_data.medium_values):
-        print(f"year: {i + 1}, value: {val}")
+        print(f"month: {i + 1}, value: {val}")
     print("list of safe investment values")
     for i, val in enumerate(invest_data.safe_values):
-        print(f"year: {i + 1}, value: {val}")
+        print(f"month: {i + 1}, value: {val}")

@@ -9,26 +9,20 @@ def init_investor():
         "medium": 0.05,
         "safe": 0.03,
     }
-    target_amount = 1000000
-    max_years = 30
 
     investor = Investor(
         invest_data=invest_data,
         monthly_invest=monthly_invest,
-        yearly_interest_rates=yearly_interest_rates,
-        target_amount=target_amount,
-        max_years=max_years,
+        yearly_interest_rates=yearly_interest_rates
     )
-    return investor
+    return investor, invest_data
 
 
 def test_calculate_investments():
-    investor = init_investor()
-    invest_data = investor.calculate_investments()
+    investor, invest_data = init_investor()
+    for i in range(12):
+        investor.add_investment(1000)
 
-    assert invest_data.risky_values[2] == 42073
-    assert invest_data.medium_values[2] == 39721
-    assert invest_data.safe_values[2] == 38203
-    assert investor.risky_reached
-    assert not investor.medium_reached
-    assert not investor.safe_reached
+    assert invest_data.risky_values[2] == 3040
+    assert invest_data.medium_values[2] == 3025
+    assert invest_data.safe_values[2] == 3015
