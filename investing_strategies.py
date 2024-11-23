@@ -14,7 +14,7 @@ class InvestStrategies:
         self.medium = yf.download("^SPX", group_by="Ticker", period=time_frame)     # medium strategy   S&P 500 index,                  https://finance.yahoo.com/quote/%5ESPX/
         self.risky = yf.download("TSLA", group_by="Ticker", period=time_frame)      # risky strategy    TESLA                           https://finance.yahoo.com/quote/TSLA/
 
-    # call with parameter percent = True to get values in %, else range [-1, 1]
+    # default -> range [-1, 1], call with percent = True to get values in %
     def interest_rates(self, percent=False) -> tuple[float, float, float]:
         return (self.calc_interest_rate(self.safe, percent), self.calc_interest_rate(self.medium, percent), self.calc_interest_rate(self.risky, percent))
 
