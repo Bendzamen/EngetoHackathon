@@ -101,13 +101,13 @@ class LoanWithRefinancing(Loan):
         if self.monthly_payment_difference_after_refinancing > 0:
             # Investment part
             invest_data = InvestmentData()
-            print("list of risky investment values")
+            # print("list of risky investment values")
             for i, val in enumerate(invest_data.risky_values):
                 print(f"year: {i + 1}, value: {val}")
-            print("list of medium investment values")
+            # print("list of medium investment values")
             for i, val in enumerate(invest_data.medium_values):
                 print(f"year: {i + 1}, value: {val}")
-            print("list of safe investment values")
+            # print("list of safe investment values")
             for i, val in enumerate(invest_data.safe_values):
                 print(f"year: {i + 1}, value: {val}")
 

@@ -82,15 +82,15 @@ if __name__ == "__main__":
     #     "medium": 0.05, # take from S&P index
     #     "safe": 0.03, # state bonds
     # },
-    for i in range(36):
-        investor.add_investment(1000)
+    # for i in range(36):
+    #     investor.add_investment(1000)
 
-    print("list of risky investment values")
-    for i, val in enumerate(invest_data.risky_values):
-        print(f"month: {i + 1}, value: {val}")
-    print("list of medium investment values")
-    for i, val in enumerate(invest_data.medium_values):
-        print(f"month: {i + 1}, value: {val}")
-    print("list of safe investment values")
-    for i, val in enumerate(invest_data.safe_values):
-        print(f"month: {i + 1}, value: {val}")
+    # print("list of risky investment values")
+    # for i, val in enumerate(invest_data.risky_values):
+    #     print(f"month: {i + 1}, value: {val}")
+    # print("list of medium investment values")
+    # for i, val in enumerate(invest_data.medium_values):
+    #     print(f"month: {i + 1}, value: {val}")
+    # print("list of safe investment values")
+    # for i, val in enumerate(invest_data.safe_values):
+    #     print(f"month: {i + 1}, value: {val}")
