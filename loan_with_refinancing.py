@@ -92,7 +92,7 @@ class LoanWithRefinancing(Loan):
                 )
             new_investment_data = investor.add_investment()
             new_installment.investment_values = {
-                "risk": new_investment_data[0],
+                "risky": new_investment_data[0],
                 "medium": new_investment_data[1],
                 "safe": new_investment_data[2],
             }
