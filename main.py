@@ -34,6 +34,8 @@ loan = LoanWithRefinancing(
     new_hypo_length_change_years=length_change,
 )
 data = []
+
+overpaid = 0.0
 for inst in loan.schedule_with_refinancing():
     data.append(
         {
@@ -46,6 +48,10 @@ for inst in loan.schedule_with_refinancing():
             "investment_values": float(inst.investment_values.get(risk_choice, 0)),
         }
     )
+    overpaid += float(inst.interest)
+
+
+st.write("Graf předčasného splacení hypotéky")
 
 df = pd.DataFrame(data)
 
@@ -56,6 +62,8 @@ payment_details_df = df[["interest", "principal"]]
 investment_data = df["investment_values"]
 
 st.line_chart(overpayment_df, x_label="Mesice", y_label="Kc,-")
+st.write(f"Přeplacená částka: {overpaid:.0f} kč")
+st.write("Graf výše spláceného úroku a dlužné částky v čase")
 st.line_chart(payment_details_df)
 with st.expander("Zdrojova data"):
     st.table(df)
