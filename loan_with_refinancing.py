@@ -1,5 +1,5 @@
 from collections import namedtuple
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from mortgage import Loan
 
@@ -15,7 +15,7 @@ class Installment:
     total_interest: float
     balance: float
     monthly_payment_difference: float = 0.0
-    investment_values: dict[str, float] = None
+    investment_values: dict[str, float] = field(default_factory=dict)
 
     @staticmethod
     def from_namedtuple(installment: namedtuple):
@@ -27,7 +27,7 @@ class Installment:
             total_interest=installment.total_interest,
             balance=installment.balance,
             monthly_payment_difference=0.0,
-            investment_values=None,
+            investment_values=dict(),
         )
 
 
