@@ -17,14 +17,13 @@ old_interest_rate = col2.number_input("Původní úrok [%]", min_value=0.1, valu
 old_loan_length = col1.number_input("Původní délka splácení [roky]", min_value=1, value=20)
 old_loan_current_year = col1.number_input("Rok refinancování", min_value=1, max_value=old_loan_length - 1, value=5)
 refinancing_interest_rate = col2.number_input("Úrok po refinancování [%]", min_value=0.1, value=5.0) / 100
-new_loan_length = col2.number_input("Relativní prodloužení/zkrácení hypotéky po refinancování (v letech)", min_value=-20, value=7)
-length_change = old_loan_length - new_loan_length
+new_loan_length = col2.number_input("Doba splácení hypotéky (v letech)", min_value=-20, value=25)
+length_change = new_loan_length - old_loan_length
 
 risk_choice = st.selectbox(
     "Kterou miru rizika pri investovani preferujete?",
     ("safe", "medium", "risky"),
 )
-
 
 loan = LoanWithRefinancing(
     principal=home_value,
@@ -56,7 +55,7 @@ overpayment_df = df[["balance", "investment_values"]]
 payment_details_df = df[["interest", "principal"]]
 investment_data = df["investment_values"]
 
-st.line_chart(overpayment_df)
+st.line_chart(overpayment_df, x = "Mesic", y = "Hodnota")
 st.line_chart(payment_details_df)
 with st.expander("Zdrojova data"):
     st.table(df)
