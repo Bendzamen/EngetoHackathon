@@ -12,6 +12,8 @@ import requests
 # SFTP01M11 -> Repo sazba - 2 týdny
 # SFTP04M2102 -> PRIBOR - 7 dní
 
+EMPTY = {"", "NaN"}
+
 
 class Rates:
     def __init__(self) -> None:
@@ -28,16 +30,17 @@ class Rates:
         response = requests.get(url)
         if response.status_code == 200:
             print("API fetch successful")
-            self.status = True
+            self.__status = True
             csv_content = response.content.decode('utf-8')
             csv_reader = csv.reader(StringIO(csv_content), delimiter=";")
             next(csv_reader)    # skip csv header
             latest_rates = next(csv_reader)
             date = latest_rates[0]
             self.__date = datetime(int(date[0:4]), int(date[4:6]), int(date[6:8]))
-            self.__SFTP01M11 = float(latest_rates[3].replace(',', '.')) if latest_rates[3] != "NaN" else None
-            self.__SFTP02M11 = float(latest_rates[1].replace(',', '.')) if latest_rates[1] != "NaN" else None
-            self.__SFTP03M11 = float(latest_rates[2].replace(',', '.')) if latest_rates[2] != "NaN" else None
+            self.__SFTP01M11 = float(latest_rates[3].replace(',', '.')) if latest_rates[3] not in EMPTY else None
+            self.__SFTP02M11 = float(latest_rates[1].replace(',', '.')) if latest_rates[1] not in EMPTY else None
+            self.__SFTP03M11 = float(latest_rates[2].replace(',', '.')) if latest_rates[2] not in EMPTY else None
+            self.__SFTP04M2102 = float(latest_rates[4].replace(',', '.')) if len(latest_rates) == 5 else None
 
         else:
             print("Failed to fetch data from the API")
