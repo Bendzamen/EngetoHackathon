@@ -16,6 +16,7 @@ class Installment:
     balance: float
     monthly_payment_difference: float = 0.0
     investment_values: dict[str, float] = field(default_factory=dict)
+    tax_returned_total: float = 0.0
 
     @staticmethod
     def from_namedtuple(installment: namedtuple):
@@ -28,6 +29,7 @@ class Installment:
             balance=installment.balance,
             monthly_payment_difference=0.0,
             investment_values=dict(),
+            tax_returned_total=0.0,
         )
 
 
@@ -50,9 +52,13 @@ class LoanWithRefinancing(Loan):
 
     def schedule_with_refinancing(self) -> list[namedtuple]:
         new_schedule = []
-        for part in self.schedule():
+        previous_tax_returned_total = 0
+        schedule = self.schedule()
+        for i, part in enumerate(schedule):
             self.original_monthly_payment = part.payment
             new_installment = Installment.from_namedtuple(part)
+            previous_tax_returned_total = new_schedule[i - 1].tax_returned_total if i > 0 else 0
+            new_installment.tax_returned_total = previous_tax_returned_total + float(part.interest) * 0.15
             new_schedule.append(new_installment)
             # Refinancing
             if part.number == self.n_periods * self.refinancing_year:
@@ -66,14 +72,15 @@ class LoanWithRefinancing(Loan):
 
         invest_data = InvestmentData()
         investor = None
-        first = True
-        for part in new_loan.schedule():
+        new_loan_schedule = new_loan.schedule()
+        for i, part in enumerate(new_loan_schedule):
             if part.number == 0:
                 continue
             self.new_monthly_payment = part.payment
             new_installment = Installment.from_namedtuple(part)
+            new_installment.tax_returned_total = previous_tax_returned_total + float(part.interest) * 0.15
             new_installment.monthly_payment_difference = self.new_monthly_payment - self.original_monthly_payment
-            if first:
+            if i == 1:
                 investor = Investor(
                     invest_data=invest_data,
                     monthly_invest=float(new_installment.monthly_payment_difference),
@@ -83,7 +90,6 @@ class LoanWithRefinancing(Loan):
                         "safe": 0.03,  # state bonds
                     },
                 )
-                first = False
             new_investment_data = investor.add_investment()
             new_installment.investment_values = {
                 "risk": new_investment_data[0],
