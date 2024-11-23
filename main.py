@@ -34,13 +34,21 @@ for inst in loan.schedule():
         'payment': float(inst.payment),
         'interest': float(inst.interest),
         'principal': float(inst.principal),
-        # 'total_interest': float(inst.total_interest),
-        # 'balance': float(inst.balance)
+        'total_interest': float(inst.total_interest),
+        'balance': float(inst.balance)
     })
 
-# Create the DataFrame
 df = pd.DataFrame(data)
 
-# Display the DataFrame
-print(df)
-st.line_chart(df)
+df.drop(df.index[0], inplace=True)
+
+overpayment_df = df[["total_interest", "balance"]]
+payment_details_df = df[["interest", "principal"]]
+others_df = df.groupby("payment")
+print(payment_details_df["principal"])
+
+st.line_chart(overpayment_df)
+st.line_chart(payment_details_df)
+with st.expander("Zdrojova data"):
+	st.table(df)
+# st.line_chart(others_df)
