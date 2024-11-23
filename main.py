@@ -13,9 +13,9 @@ st.title("Kalkulačka refinancování hypotéky")
 
 col1, col2 = st.columns(2)
 home_value = col1.number_input("Původní splácená částka", min_value=0, value=100_000)
-old_interest_rate = col2.number_input("Původní úrok [%]", min_value=0.1, value=2.0) / 100
 old_loan_length = col1.number_input("Původní délka splácení [roky]", min_value=1, value=20)
-old_loan_current_year = col1.number_input("Rok refinancování", min_value=1, max_value=old_loan_length - 1, value=5)
+old_interest_rate = col1.number_input("Původní úrok [%]", min_value=0.1, value=2.0) / 100
+old_loan_current_year = col2.number_input("Rok refinancování", min_value=1, max_value=old_loan_length - 1, value=5)
 refinancing_interest_rate = col2.number_input("Úrok po refinancování [%]", min_value=0.1, value=5.0) / 100
 new_loan_length = col2.number_input("Doba splácení hypotéky (v letech)", min_value=-20, value=20)
 length_change = new_loan_length - old_loan_length
