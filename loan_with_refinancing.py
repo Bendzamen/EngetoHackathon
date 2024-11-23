@@ -84,11 +84,6 @@ class LoanWithRefinancing(Loan):
                 investor = Investor(
                     invest_data=invest_data,
                     monthly_invest=float(new_installment.monthly_payment_difference),
-                    yearly_interest_rates={
-                        "risky": 0.08,  # add couple % to S&P?
-                        "medium": 0.05,  # take from S&P index
-                        "safe": 0.03,  # state bonds
-                    },
                 )
             new_investment_data = investor.add_investment()
             new_installment.investment_values = {

@@ -61,7 +61,7 @@ overpayment_df = df[["balance", "investment_values"]]
 payment_details_df = df[["interest", "principal"]]
 investment_data = df["investment_values"]
 
-st.line_chart(overpayment_df, x_label="Mesice", y_label="Kc,-")
+st.line_chart(overpayment_df, x_label="Mesice", y_label="Kč")
 st.write(f"Přeplacená částka: {overpaid:.0f} kč")
 st.write("Graf výše spláceného úroku a dlužné částky v čase")
 st.line_chart(payment_details_df)
