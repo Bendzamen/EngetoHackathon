@@ -105,38 +105,7 @@ class LoanWithRefinancing(Loan):
             for i, val in enumerate(invest_data.safe_values):
                 print(f"year: {i + 1}, value: {val}")
 
-            #for i, part in enumerate(new_schedule[self.refinancing_year * 12 :]):
-            #    investor.add_investment(float(self.monthly_payment_difference_after_refinancing))
-            #    part.investment_values = {}
-            #    part.investment_values["risky"] = invest_data.risky_values[i]
-            #    part.investment_values["medium"] = invest_data.medium_values[i]
-            #    part.investment_values["safe"] = invest_data.safe_values[i]
-
-            # break_free = False
-            # for year in range(self.years_from_refinancing_to_end):
-            #    print(f"Year: {year + 1}")
-            #    print(f"Risky: {invest_data.risky_values[year]}")
-            #    print(f"Medium: {invest_data.medium_values[year]}")
-            #    print(f"Safe: {invest_data.safe_values[year]}")
-            #    print()
-            #    start_year = year + self.refinancing_year
-            #    print(start_year)
-            #    for part in new_schedule[start_year * 12 : start_year * 12 + 12]:
-            #        part.investment_values = {}
-            #        part.investment_values["risky"] = invest_data.risky_values[year]
-            #        part.investment_values["medium"] = invest_data.medium_values[year]
-            #        part.investment_values["safe"] = invest_data.safe_values[year]
-            #        print(part)
-            #        if part.balance < part.investment_values["risky"]:
-            #            print("-" * 50)
-            #            print("Investment reached the balance")
-            #            break_free = True
-            #            break
-
-            #    if break_free:
-            #        break
-
-        return new_schedule
+        return new_schedule[1:]
 
     @property
     def years_from_refinancing_to_end(self):
