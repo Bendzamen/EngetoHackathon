@@ -7,12 +7,19 @@ class Taxes:
         self.discounts: list = []
 
     def aggregate_yearly_values(self):
+        """
+        Aggregates data in tax_discounts list, summin each 12 values together.
+        This creates list of years from list of months.
+        """
         months_in_year = 12
         for i in range(0, len(self.tax_discounts), months_in_year):
             yearly_sum = sum(self.tax_discounts[i : i + months_in_year])
             self.interests_yearly.append(round(yearly_sum, 2))
 
     def calculate_discounts(self) -> list[float]:
+        """
+        Creates discounts list based on max_discount value.
+        """
         if not self.interests_yearly:
             self.aggregate_yearly_values()
         for i in self.interests_yearly:

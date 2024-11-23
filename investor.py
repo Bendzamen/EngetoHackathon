@@ -29,20 +29,21 @@ class Investor:
 
     @staticmethod
     def get_interest_rates():
+        """
+        downloads interest rates from yahoo
+        safe is based on treasury bonds
+        medium is based on S&P
+        risky is based on tesla stock
+        """
         invs = InvestStrategies()
         safe, medium, risky = invs.interest_rates()
         return {"risky": risky, "medium": medium, "safe": safe}
 
-    @staticmethod
-    def _cumulative_sum(numbers):
-        cumulative_list = []
-        total = 0
-        for num in numbers:
-            total += num
-            cumulative_list.append(total)
-        return cumulative_list
-
     def apply_interests(self):
+        """
+        Applies monthly interest rate to value of portfolios.
+        Saves values to invest_data dataclass.
+        """
         monthly_interest_multi = 1 + (self.yearly_interest_rates["risky"] / 12)
         self.curr_val_risky = self.curr_val_risky * monthly_interest_multi
         self.invest_data.risky_values.append(int(self.curr_val_risky))
@@ -56,6 +57,11 @@ class Investor:
         self.invest_data.safe_values.append(int(self.curr_val_safe))
 
     def add_investment(self, investment: float = None):
+        """
+        Adds monthly investment to risky, medium and safe portfolios
+        and applies interest.
+        investment: float containing investment to be added
+        """
         monthly_invest = self.monthly_invest if not investment else investment
         self.curr_val_risky += monthly_invest
         self.curr_val_medium += monthly_invest
