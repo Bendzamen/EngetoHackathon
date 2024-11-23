@@ -14,16 +14,17 @@ class InvestStrategies:
         self.medium = yf.download("^SPX", group_by="Ticker", period=time_frame)     # medium strategy   S&P 500 index,                  https://finance.yahoo.com/quote/%5ESPX/
         self.risky = yf.download("TSLA", group_by="Ticker", period=time_frame)      # risky strategy    TESLA                           https://finance.yahoo.com/quote/TSLA/
 
-    def interest_rates(self) -> tuple[float, float, float]:
-        return (self.calc_interest_rate(self.safe), self.calc_interest_rate(self.medium), self.calc_interest_rate(self.risky))
+    # call with parameter percent = True to get values in %, else range [-1, 1]
+    def interest_rates(self, percent=False) -> tuple[float, float, float]:
+        return (self.calc_interest_rate(self.safe, percent), self.calc_interest_rate(self.medium, percent), self.calc_interest_rate(self.risky, percent))
 
-    def calc_interest_rate(self, data: pd.DataFrame) -> float:
+    def calc_interest_rate(self, data: pd.DataFrame, percent: bool) -> float:
         actual_years = TIMEFRAMES[self.time_frame]
         if self.time_frame == "ytd" or self.time_frame == "max":
             actual_years = data.len() / 12
         start_val = float(data.iloc[3][4])
         end_val = float(data.iloc[-1][4])
-        return (pow(end_val / start_val, 1 / actual_years) - 1) * 100
+        return (pow(end_val / start_val, 1 / actual_years) - 1) * (100 if percent else 1)
 
 
 '''
