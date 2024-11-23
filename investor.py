@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from investing_strategies import InvestStrategies
 
 
 @dataclass
@@ -14,17 +15,23 @@ class Investor:
         self,
         invest_data: InvestmentData,
         monthly_invest: float,
-        yearly_interest_rates: dict,
+        yearly_interest_rates: dict = None,
     ):
         self.invest_data = invest_data
         self.monthly_invest = monthly_invest
-        self.yearly_interest_rates = yearly_interest_rates
+        self.yearly_interest_rates = self.get_interest_rates() if not yearly_interest_rates else yearly_interest_rates
         self.curr_val_risky = 0
         self.curr_val_medium = 0
         self.curr_val_safe = 0
         self.risky_reached = False
         self.medium_reached = False
         self.safe_reached = False
+
+    @staticmethod
+    def get_interest_rates():
+        invs = InvestStrategies()
+        safe, medium, risky = invs.interest_rates()
+        return {"risky": risky, "medium": medium, "safe": safe}
 
     @staticmethod
     def _cumulative_sum(numbers):
@@ -55,18 +62,19 @@ class Investor:
         self.curr_val_safe += monthly_invest
         self.apply_interests()
 
+
 if __name__ == "__main__":
     invest_data = InvestmentData()
     investor = Investor(
         invest_data=invest_data,
         monthly_invest=1000,
-        yearly_interest_rates={
-            "risky": 0.08, # add couple % to S&P?
-            "medium": 0.05, # take from S&P index
-            "safe": 0.03, # state bonds
-        },
     )
 
+    # yearly_interest_rates={
+    #     "risky": 0.08, # add couple % to S&P?
+    #     "medium": 0.05, # take from S&P index
+    #     "safe": 0.03, # state bonds
+    # },
     for i in range(36):
         investor.add_investment(1000)
 
